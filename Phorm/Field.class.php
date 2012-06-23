@@ -352,6 +352,20 @@ abstract class Phorm_Field
 	abstract public function import_value($value);
 	
 	/**
+	 * Needs to perform the inverse of import_value(). Provided so current data
+	 * can be displayed using forms. For example, if import_value() converts strings
+	 * in the format 'dd/mm/YYYY' to a unix timestamp then export_value() should
+	 * convert a timestamp to a 'dd/mm/YYYY' string representation.
+	 * 
+	 * @author Tris Forster
+	 * @param mixed $value 
+	 * @return mixed
+	 */
+	public function export_value($value) {
+		return (string) $value;
+	}
+	
+	/**
 	 * Validates that the value isn't null or an empty string.
 	 * This is a built-in validation rule available to all fields
 	 * (we have hard-coded logic in the is_valid() function

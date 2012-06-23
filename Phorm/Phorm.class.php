@@ -123,11 +123,8 @@ abstract class Phorm_Phorm
 		// Determine if this form is bound (depends on defined fields)
 		$this->bound = $this->check_if_bound($user_data);
 
-		// Merge user data over the default data (if any)
-		$this->data = array_merge($data, $user_data);
-
 		// Set the fields' data
-		$this->set_data();
+		$this->set_data($user_data, $data);
 		$this->lang = new Phorm_Language($lang);
 	}
 
@@ -183,17 +180,24 @@ abstract class Phorm_Phorm
 	}
 
 	/**
-	 * Sets the value of each field from the proper superglobal data array.
+	 * Sets the value of each field.  Uses the value from the superglobal
+	 * if provided, otherwise exports the default value.
 	 *
+	 * @author Tris Forster
 	 * @return null
 	 */
-	private function set_data()
+	private function set_data($user_data, $existing_data)
 	{
 		foreach( $this->fields as $name => &$field )
 		{
-			if( array_key_exists($name, $this->data) )
+			if( array_key_exists($name, $user_data) )
 			{
-				$field->set_value($this->data[$name]);
+				$field->set_value($user_data[$name]);
+			}
+			elseif( array_key_exists($name, $existing_data) )
+			{
+				$value = $field->export_value($existing_data[$name]);
+				$field->set_value($value);
 			}
 		}
 	}
