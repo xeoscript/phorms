@@ -1,4 +1,12 @@
 # Changes in this branch
+
+## tf198's changes
+### Functional Changes:
+* Changed how values passed via *$data* parameter are handled so there is a symmetric relationship between it and the validated output of
+Phorm::cleaned\_data().  Before you couldn't display a form for stored data because certain fields like *Phorm\_Field\_Date* were populated
+by one type (string) and returned another (unix timestamp).  All such fields should now provide an *export\_value($value)* method that performs
+the inverse of *import\_value($value)*.
+
 ## petsagouris's changes
 ### Functional Changes:
 * Removed client side validation to keep this library focused on PHP (not javascript)
