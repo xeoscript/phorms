@@ -17,13 +17,20 @@ class Phorm_Field_DateTime extends Phorm_Field_Text
 {
 
 	/**
+	 * Date format
+	 * @var string
+	 */
+	private $format;
+	
+	/**
 	 * @param string $label the field's text label
 	 * @param array $validators a list of callbacks to validate the field data
 	 * @param array $attributes a list of key/value pairs representing HTML attributes
 	 */
-	public function __construct($label, array $validators=array(), array $attributes=array())
+	public function __construct($label, $format='d/m/Y', array $validators=array(), array $attributes=array())
 	{
-		parent::__construct($label, 25, 100, $validators, $attributes);
+		parent::__construct($label, 10, 100, $validators, $attributes);
+		$this->format = $format;
 	}
 
 	/**
@@ -37,12 +44,8 @@ class Phorm_Field_DateTime extends Phorm_Field_Text
 	{
 		parent::validate($value);
 
-		if( !filter_var($value, FILTER_VALIDATE_REGEXP, array('options'=>array('regexp'=>'/^([0-9]{2})[\-|\/]([0-9]{2})[\-|\/]([0-9]{4})$/'))) )
-		{
-			throw new Phorm_ValidationError('field_invalid_datetime_format');
-		}
-
-		if( !strptime(strstr($value, '-', '/'), '%d/%m/%Y') )
+		// do parse as validation
+		if( $value && $this->import_value($value) === null )
 		{
 			throw new Phorm_ValidationError('field_invalid_datetime_format');
 		}
@@ -57,7 +60,9 @@ class Phorm_Field_DateTime extends Phorm_Field_Text
 	 */
 	public function import_value($value)
 	{
-		return strptime(strstr(parent::import_value($value), '-', '/'), '%d/%m/%Y');
+		$value = strtr(parent::import_value($value), '-', '/');
+		$d = DateTime::createFromFormat($this->format, $value);
+		if(!$d) return null;
+		return $d->getTimestamp();
 	}
-
 }
