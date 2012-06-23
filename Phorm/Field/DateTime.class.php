@@ -65,4 +65,14 @@ class Phorm_Field_DateTime extends Phorm_Field_Text
 		if(!$d) return null;
 		return $d->getTimestamp();
 	}
+	
+	/**
+	 * Exports a unix timestamp to a date string in the correct format
+	 * 
+	 * @param int $value unix timestamp
+	 * @return string
+	 */
+	public function export_value($value) {
+		return date($this->format, $value);
+	}
 }
