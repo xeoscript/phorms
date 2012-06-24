@@ -19,6 +19,7 @@ $lang['field_invalid_datetime_format'] = 'Date/time format not recognized.';
 $lang['field_invalid_datetime_timestamp'] = 'Date/time outside unix timestamp range';
 $lang['field_invalid_multiplechoice_badformat'] = 'Invalid selection.';
 $lang['field_invalid_ipv4address'] = 'Invalid IP address';
+$lang['field_invalid_range'] = 'Must be between %s and %s';
 $lang['buttons_validate'] = 'Validate';
 $lang['buttons_reset'] = 'Clear form';
 $lang['validation_required'] = 'This field is required.';
