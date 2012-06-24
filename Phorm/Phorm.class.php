@@ -93,6 +93,12 @@ abstract class Phorm_Phorm
 	 * @var Phorm_Language
 	 */
 	public $lang;
+	
+	/**
+	 * Whether to generate HTML5 elements
+	 * @var boolean
+	 */
+	public static $html5 = false;
 
 	/**
 	 * @param string $method 'post' or 'get' (defaults to 'post')

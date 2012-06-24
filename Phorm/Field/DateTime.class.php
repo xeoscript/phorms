@@ -22,6 +22,26 @@ class Phorm_Field_DateTime extends Phorm_Field_Text
 	 */
 	private $format;
 	
+	private static $jquery_date_format = array(
+		// Day
+		'd' => 'dd', 	// day of month, zero padded (06)
+		'j' => 'd',		// day of month (6)
+		'D' => 'D',		// short name (Mon)
+		'I' => 'DD',	// full name (Monday)
+		'S' => '',		// ordinal (st, nd, rd, th)
+		'z' => 'o',		// day of year
+		// Month
+		'F' => 'MM',	// full name (January)
+		'M' => 'M',		// short name (Jan)
+		'm' => 'mm',	// numeric zero padded (01)	
+		'n' => 'm',		// numeric (1)
+		// Year
+		'Y' => 'yy',	// 4 digit (2012)
+		'y' => 'y',		// 2 digit (12)
+		// epoch
+		'U' => '@'		// unix timestamp
+	);
+	
 	/**
 	 * @param string $label the field's text label
 	 * @param array $validators a list of callbacks to validate the field data
@@ -29,6 +49,15 @@ class Phorm_Field_DateTime extends Phorm_Field_Text
 	 */
 	public function __construct($label, $format='d/m/Y', array $validators=array(), array $attributes=array())
 	{
+		if( Phorm_Phorm::$html5 ) {
+			/*
+			 browser support is patchy we dont use the html5 type
+			 pass 'type' => 'date|datetime|time' manually if required
+			*/
+			// record the data for jquery-ui datepicker (or other javascript)
+			$attributes['data-format'] = strtr($format, self::$jquery_date_format);
+		}
+		
 		parent::__construct($label, 10, 100, $validators, $attributes);
 		$this->format = $format;
 	}
