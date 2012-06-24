@@ -276,8 +276,8 @@ abstract class Phorm_Field
 			{
 				try
 				{
-					if ($f == 'required') { //special case -- available to all field types, and $this->validate() isn't even called if value is empty
-						$this->validate_required_field($value);
+					if ( is_string($f) && method_exists($this, "validate_{$f}")) {
+						$this->{"validate_{$f}"}($value);
 					} else {
 						call_user_func($f, $value);
 					}
@@ -375,7 +375,7 @@ abstract class Phorm_Field
 	 * @return null
 	 * @throws Phorm_ValidationError
 	 */
-	public function validate_required_field($value)
+	public function validate_required($value)
 	{
 		if ($value == '' || is_null($value))
 		{
