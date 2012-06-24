@@ -54,7 +54,7 @@ class Phorm_Field_DropDown extends Phorm_Field
 	 */
 	public function validate($value)
 	{
-		if( !in_array($value, array_keys($this->choices)) )
+		if( !array_key_exists($value, $this->choices) )
 		{
 			throw new Phorm_ValidationError('field_invalid_dropdown');
 		}
@@ -69,6 +69,7 @@ class Phorm_Field_DropDown extends Phorm_Field
 	 */
 	public function import_value($value)
 	{
+		if ( $value === '' ) return null;
 		return html_entity_decode((string) $value);
 	}
 
