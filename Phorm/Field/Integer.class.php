@@ -74,6 +74,7 @@ class Phorm_Field_Integer extends Phorm_Field
 	 */
 	public function import_value($value)
 	{
+		if( $value === '' ) return null;
 		return (int) (html_entity_decode((string) $value));
 	}
 

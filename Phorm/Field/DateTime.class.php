@@ -44,11 +44,23 @@ class Phorm_Field_DateTime extends Phorm_Field_Text
 	{
 		parent::validate($value);
 
+		$value = strtr($value, '-', '/');
+		
 		// do parse as validation
-		if( $value && $this->import_value($value) === null )
-		{
+		$d = DateTime::createFromFormat('!' . $this->format, $value);
+		
+		// should just be able to do this
+		if(!$d) throw new Phorm_ValidationError('field_invalid_datetime_format');
+		
+		// but unfortunately createFromFormat doesn't actually fail if partially parseable
+		$e = $d->getLastErrors();
+		if( $e['warning_count'] != 0 ) {
 			throw new Phorm_ValidationError('field_invalid_datetime_format');
 		}
+		
+		// need to check it is convertable
+		$ts = $d->getTimeStamp();
+		if($ts == false) throw new Phorm_ValidationError('field_invalid_datetime_timestamp');
 	}
 
 	/**
@@ -60,9 +72,9 @@ class Phorm_Field_DateTime extends Phorm_Field_Text
 	 */
 	public function import_value($value)
 	{
+		if( $value === '' ) return null;
 		$value = strtr(parent::import_value($value), '-', '/');
-		$d = DateTime::createFromFormat($this->format, $value);
-		if(!$d) return null;
+		$d = DateTime::createFromFormat('!' . $this->format, $value);
 		return $d->getTimestamp();
 	}
 	
