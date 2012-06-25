@@ -55,7 +55,10 @@ class Phorm_Field_DateTime extends Phorm_Field_Text
 			 pass 'type' => 'date|datetime|time' manually if required
 			*/
 			// record the data for jquery-ui datepicker (or other javascript)
-			$attributes['data-format'] = strtr($format, self::$jquery_date_format);
+			$jquery_format = strtr($format, self::$jquery_date_format);
+			$attributes['data-format'] = $jquery_format;
+			// add a hint
+			$attributes['placeholder'] = str_replace('y', 'yy', $jquery_format);
 		}
 		
 		parent::__construct($label, 10, 100, $validators, $attributes);
@@ -114,6 +117,7 @@ class Phorm_Field_DateTime extends Phorm_Field_Text
 	 * @return string
 	 */
 	public function export_value($value) {
+		if(!$value) return '';
 		return date($this->format, $value);
 	}
 }
