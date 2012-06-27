@@ -52,15 +52,6 @@ abstract class Phorm_Phorm
 	public $bound = false;
 
 	/**
-	 * A copy of the superglobal data array merged with any default field values
-	 * provided during class instantiation.
-	 *
-	 * @see Phorm::__construct()
-	 * @var array
-	 */
-	private $data;
-
-	/**
 	 * Private field storage.
 	 *
 	 * @var array
@@ -129,8 +120,13 @@ abstract class Phorm_Phorm
 		// Determine if this form is bound (depends on defined fields)
 		$this->bound = $this->check_if_bound($user_data);
 
-		// Set the fields' data
-		$this->set_data($user_data, $data);
+		// change how we populate depending on whether we are bound or not
+		if($this->bound) {
+			$this->set_data($user_data, false);
+		} else {
+			$this->set_data($data, true);
+		}
+		
 		$this->lang = new Phorm_Language($lang);
 	}
 
@@ -190,19 +186,18 @@ abstract class Phorm_Phorm
 	 * if provided, otherwise exports the default value.
 	 *
 	 * @author Tris Forster
+	 * @param array $data data to set
+	 * @param boolean $export whether to run the value through export_value() first
 	 * @return null
 	 */
-	private function set_data($user_data, $existing_data)
+	private function set_data($data, $export)
 	{
 		foreach( $this->fields as $name => &$field )
 		{
-			if( array_key_exists($name, $user_data) )
+			if( array_key_exists($name, $data) )
 			{
-				$field->set_value($user_data[$name]);
-			}
-			elseif( array_key_exists($name, $existing_data) )
-			{
-				$value = $field->export_value($existing_data[$name]);
+				$value = $data[$name];
+				if($export) $value = $field->export_value($value);
 				$field->set_value($value);
 			}
 		}
