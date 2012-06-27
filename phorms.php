@@ -51,6 +51,8 @@ else
 	include(PHORMS_ROOT.'Phorm/Field/DropDown.class.php');
 	include(PHORMS_ROOT.'Phorm/Field/Integer.class.php');
 	include(PHORMS_ROOT.'Phorm/Field/URL.class.php');
+	include(PHORMS_ROOT.'Phorm/Field/Range.class.php');
+	include(PHORMS_ROOT.'Phorm/Field/IPv4Address.class.php');
 	include(PHORMS_ROOT.'Phorm/Type/File.class.php');
 	include(PHORMS_ROOT.'Phorm/Type/Image.class.php');
 	include(PHORMS_ROOT.'Phorm/Widget/Cancel.class.php');
