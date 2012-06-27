@@ -52,7 +52,7 @@ class Phorm_Field_Decimal extends Phorm_Field
 	 */
 	public function validate($value)
 	{
-		if( !filter_var($value,FILTER_VALIDATE_FLOAT ) )
+		if( filter_var($value,FILTER_VALIDATE_FLOAT ) === false )
 		{
 			throw new Phorm_ValidationError('field_invalid_decimal');
 		}
@@ -66,7 +66,8 @@ class Phorm_Field_Decimal extends Phorm_Field
 	 */
 	public function import_value($value)
 	{
-		return round((float) (html_entity_decode($value)), $this->precision);
+		if( $value === '' ) return null;
+		return round((float) $value, $this->precision);
 	}
 
 }

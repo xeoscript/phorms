@@ -23,7 +23,9 @@ class Phorm_Widget_Text extends Phorm_Widget
 	 */
 	protected function serialize($value, array $attributes=array())
 	{
-		$attributes['type'] = 'text';
+		if( !isset($attributes['type']) ) {
+			$attributes['type'] = 'text';
+		}
 		return parent::serialize($value, $attributes);
 	}
 

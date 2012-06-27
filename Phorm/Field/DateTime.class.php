@@ -17,13 +17,20 @@ class Phorm_Field_DateTime extends Phorm_Field_Text
 {
 
 	/**
+	 * Date format
+	 * @var string
+	 */
+	private $format;
+	
+	/**
 	 * @param string $label the field's text label
 	 * @param array $validators a list of callbacks to validate the field data
 	 * @param array $attributes a list of key/value pairs representing HTML attributes
 	 */
-	public function __construct($label, array $validators=array(), array $attributes=array())
+	public function __construct($label, $format='d/m/Y', array $validators=array(), array $attributes=array())
 	{
-		parent::__construct($label, 25, 100, $validators, $attributes);
+		parent::__construct($label, 10, 100, $validators, $attributes);
+		$this->format = $format;
 	}
 
 	/**
@@ -37,15 +44,23 @@ class Phorm_Field_DateTime extends Phorm_Field_Text
 	{
 		parent::validate($value);
 
-		if( !filter_var($value, FILTER_VALIDATE_REGEXP, array('options'=>array('regexp'=>'/^([0-9]{2})[\-|\/]([0-9]{2})[\-|\/]([0-9]{4})$/'))) )
-		{
+		$value = strtr($value, '-', '/');
+		
+		// do parse as validation
+		$d = DateTime::createFromFormat('!' . $this->format, $value);
+		
+		// should just be able to do this
+		if(!$d) throw new Phorm_ValidationError('field_invalid_datetime_format');
+		
+		// but unfortunately createFromFormat doesn't actually fail if partially parseable
+		$e = $d->getLastErrors();
+		if( $e['warning_count'] != 0 ) {
 			throw new Phorm_ValidationError('field_invalid_datetime_format');
 		}
-
-		if( !strptime(strstr($value, '-', '/'), '%d/%m/%Y') )
-		{
-			throw new Phorm_ValidationError('field_invalid_datetime_format');
-		}
+		
+		// need to check it is convertable
+		$ts = $d->getTimeStamp();
+		if($ts == false) throw new Phorm_ValidationError('field_invalid_datetime_timestamp');
 	}
 
 	/**
@@ -57,7 +72,9 @@ class Phorm_Field_DateTime extends Phorm_Field_Text
 	 */
 	public function import_value($value)
 	{
-		return strptime(strstr(parent::import_value($value), '-', '/'), '%d/%m/%Y');
+		if( $value === '' ) return null;
+		$value = strtr(parent::import_value($value), '-', '/');
+		$d = DateTime::createFromFormat('!' . $this->format, $value);
+		return $d->getTimestamp();
 	}
-
 }
