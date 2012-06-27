@@ -9,7 +9,7 @@ Phorm::cleaned\_data().  Before you couldn't display a form for stored data beca
 by one type (string) and returned another (unix timestamp).  All such fields should now provide an *export\_value($value)* method that performs
 the inverse of *import\_value($value)*.
 
-## Non-Functional Changes:
+### Non-Functional Changes:
 * Added PHPUnit tests
 
 ## petsagouris's changes
