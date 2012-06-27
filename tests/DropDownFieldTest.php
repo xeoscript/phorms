@@ -18,9 +18,9 @@ class DropDownFieldTest extends FieldTest {
 	
 	function html_data() {
 		return array(
-			array('2', '<select  class="phorm_field_dropdown" ><option  value="1" >One</option>
-<option  value="2" selected="selected" >Two</option>
-<option  value="3" >Three</option>
+			array('2', '<select class="phorm_field_dropdown" ><option value="1" >One</option>
+<option value="2" selected="selected" >Two</option>
+<option value="3" >Three</option>
 </select>'),
 		);
 	}
