@@ -18,9 +18,6 @@ class DecimalFieldTest extends FieldTest {
 			array('-12.546', -12.546),
 			array('1e3', 1000.0),
 			
-			// blank maps to null
-			array('', null),
-			
 			// precision
 			array('1.23456789', 1.23, array(25, 2)),
 			array('-1.23456789', -1.235, array(25, 3)),

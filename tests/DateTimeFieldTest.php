@@ -22,9 +22,6 @@ class DateTimeFieldTest extends FieldTest {
 			// alternate formats
 			array('6/24/2012', 1340496000 - $offset, array('m/d/Y')),
 			
-			// blank input
-			array('', null),
-			
 			// rubish input
 			array('Monday week', 'Date/time format not recognized.'),
 			// backward date (American format)

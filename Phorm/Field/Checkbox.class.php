@@ -81,7 +81,7 @@ class Phorm_Field_Checkbox extends Phorm_Field
 	 * @return null
 	 * @throws Phorm_ValidationError
 	 */
-	public function validate_required_field($value)
+	public function validate_required($value)
 	{
 		if (!$this->checked)
 		{

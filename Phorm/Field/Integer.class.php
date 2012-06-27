@@ -30,8 +30,8 @@ class Phorm_Field_Integer extends Phorm_Field
 	public function __construct($label, $size, $max_digits, array $validators=array(), array $attributes=array())
 	{
 		$this->max_digits = $max_digits;
-		if( Phorm_Phorm::$html5 && !isset($attributes['type'])) {
-			$attributes['type'] = number;
+		if( !empty(Phorm_Phorm::$html5) && !isset($attributes['type'])) {
+			$attributes['type'] = 'number';
 		}
 		$attributes['maxlength'] = $max_digits;
 		$attributes['size'] = $size;

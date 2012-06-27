@@ -15,9 +15,6 @@ class IntegerFieldTest extends FieldTest {
 			array('23', 23),
 			array('-45', -45),
 			
-			// blank maps to null
-			array('', null),
-			
 			// max digits
 			array('1234567890', 'Must be a whole number with 5 or less digits.', array(25, 5)),
 			array('12345', 12345, array(25, 5)),

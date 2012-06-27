@@ -11,7 +11,6 @@ class DropDownFieldTest extends FieldTest {
 		return array(
 			array('1', '1'),
 			
-			array('', null),
 			array('', 'This field is required.', $this->defaults + array('validators' => array('required'))),
 			array('4', 'Invalid selection.'),
 		);

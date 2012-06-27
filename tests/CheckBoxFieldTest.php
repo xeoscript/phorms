@@ -5,6 +5,8 @@ class CheckBoxFieldTest extends FieldTest {
 	
 	protected $field = "Phorm_Field_CheckBox";
 	
+	protected $blank_input = false;
+	
 	function validation_data() {
 		return array(
 			array('on', true),

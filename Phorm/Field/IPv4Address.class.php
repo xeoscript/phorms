@@ -44,7 +44,7 @@ class Phorm_Field_IPv4Address extends Phorm_Field_Text {
 		$this->subnet = $subnet;
 		$this->as_long = $as_long;
 		
-		if ( Phorm_Phorm::$html5 ) {
+		if ( !empty(Phorm_Phorm::$html5) ) {
 			$attributes['placeholder'] = 'xxx.xxx.xxx.xxx';
 		}
 		
@@ -88,6 +88,7 @@ class Phorm_Field_IPv4Address extends Phorm_Field_Text {
 	 * @return string|long
 	 */
 	public function import_value($value) {
+		if ( $value == '' ) return null;
 		if( $this->as_long ) {
 			return ip2long(parent::import_value($value));
 		}

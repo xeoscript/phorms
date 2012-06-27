@@ -49,7 +49,7 @@ class Phorm_Field_DateTime extends Phorm_Field_Text
 	 */
 	public function __construct($label, $format='d/m/Y', array $validators=array(), array $attributes=array())
 	{
-		if( Phorm_Phorm::$html5 ) {
+		if( !empty(Phorm_Phorm::$html5) ) {
 			/*
 			 browser support is patchy we dont use the html5 type
 			 pass 'type' => 'date|datetime|time' manually if required

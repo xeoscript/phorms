@@ -7,14 +7,12 @@ class TextFieldTest extends FieldTest {
 	
 	protected $defaults = array('size' => 25, 'max_length' => 100);
 	
+	protected $blank_input = '';
+	
 	function validation_data() {
 		return array(
 			array('Hello', 'Hello'),
 			array('Andy &amp; Bob', 'Andy & Bob'),
-			
-			// blank input - treat as string not null
-			array('', ''),
-			array('', 'This field is required.', $this->defaults + $this->require),
 			
 			// max length
 			array('12345', '12345', array(25, 5)),

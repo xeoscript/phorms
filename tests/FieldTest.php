@@ -5,6 +5,8 @@ abstract class FieldTest extends PHPUnit_Framework_TestCase {
 	
 	protected $defaults = array();
 	
+	protected $blank_input = null;
+	
 	public $require = array('validators' => array('required'));
 	
 	/**
@@ -57,5 +59,21 @@ abstract class FieldTest extends PHPUnit_Framework_TestCase {
 		$field = $this->getField($args, $input);
 		
 		$this->assertEquals($html, $field->html());
+	}
+	
+	/**
+	 * For most fields blank input should result in null.
+	 * Set $blank_input in test case if different.
+	 */
+	function testBlankInput() {
+		// check what happens with blank input
+		$this->testInputs('', $this->blank_input, $this->defaults);
+	}
+	
+	/**
+	 * Check the required validator works on this field
+	 */
+	function testRequired() {
+		$this->testInputs('', 'This field is required.', $this->defaults + array('validators' => array('required')));
 	}
 }
