@@ -2,10 +2,15 @@
 
 ## tf198's changes
 ### Functional Changes:
+* Fixes for Decimal, Integer, DateTime, DropDown and CheckBox fields
+* Allowing override of input type in Text widget (for extended HTML5 types: date url etc...)
 * Changed how values passed via *$data* parameter are handled so there is a symmetric relationship between it and the validated output of
 Phorm::cleaned\_data().  Before you couldn't display a form for stored data because certain fields like *Phorm\_Field\_Date* were populated
 by one type (string) and returned another (unix timestamp).  All such fields should now provide an *export\_value($value)* method that performs
 the inverse of *import\_value($value)*.
+
+## Non-Functional Changes:
+* Added PHPUnit tests
 
 ## petsagouris's changes
 ### Functional Changes:
