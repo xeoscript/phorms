@@ -46,10 +46,10 @@ class Phorm_Widget_Select extends Phorm_Widget
 			{
 				$option_attributes['selected'] = 'selected';
 			}
-			$options[] = sprintf("<option %s>%s</option>\n", $this->serialize_attributes($option_attributes), $this->clean_string($display));
+			$options[] = sprintf("<option%s>%s</option>\n", $this->serialize_attributes($option_attributes), $this->clean_string($display));
 		}
 
-		return sprintf('<select %s>%s</select>', $this->serialize_attributes($attributes), implode($options));
+		return sprintf('<select%s>%s</select>', $this->serialize_attributes($attributes), implode($options));
 	}
 
 }
