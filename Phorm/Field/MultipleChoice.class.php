@@ -80,7 +80,9 @@ class Phorm_Field_MultipleChoice extends Phorm_Field
 	 */
 	public function validate($value)
 	{
-
+		
+		if( $value == null ) return;
+		
 		if( !is_array($value) )
 		{
 			throw new Phorm_ValidationError('field_invalid_multiplechoice_badformat');
