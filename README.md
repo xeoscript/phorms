@@ -4,7 +4,7 @@
 * Fixes for Decimal, Integer, DateTime, DropDown and CheckBox fields
 * Allowing override of input type in Text widget (for extended HTML5 types: date url etc...)
 
-## Non-Functional Changes:
+### Non-Functional Changes:
 * Added PHPUnit tests
 
 ## petsagouris's changes
