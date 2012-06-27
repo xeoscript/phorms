@@ -103,6 +103,7 @@ class Phorm_Field_MultipleChoice extends Phorm_Field
 	 */
 	public function import_value($value)
 	{
+		if( $value == '' ) return array();
 		if( is_array($value) )
 		{
 			foreach( $value as $key => &$val )
