@@ -1,4 +1,12 @@
 # Changes in this branch
+## tf198's changes
+### Functional Changes:
+* Fixes for Decimal, Integer, DateTime, DropDown and CheckBox fields
+* Allowing override of input type in Text widget (for extended HTML5 types: date url etc...)
+
+## Non-Functional Changes:
+* Added PHPUnit tests
+
 ## petsagouris's changes
 ### Functional Changes:
 * Removed client side validation to keep this library focused on PHP (not javascript)
