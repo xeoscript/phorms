@@ -1,4 +1,18 @@
 <?php
+/**
+ * @package Phorms
+ * @subpackage Fields
+ */
+/**
+ * Phorm_Field_Range
+ *
+ * An integer field with defined limits.
+ *
+ * @author Tris Forster
+ * @license http://www.opensource.org/licenses/mit-license.php MIT
+ * @package Phorms
+ * @subpackage Fields
+ */
 class Phorm_Field_Range extends Phorm_Field_Integer {
 	
 	/**
@@ -24,7 +38,7 @@ class Phorm_Field_Range extends Phorm_Field_Integer {
 	function __construct($label, $min, $max, $slider=true, $validators=array(), $attributes=array()) {
 		$this->min = $min;
 		$this->max = $max;
-		if( Phorm_Phorm::$html5 && $slider && !isset($attributes['type']) ) {
+		if( $slider && !isset($attributes['type']) ) {
 			$attributes['type'] = 'range';
 			$attributes['min'] = $min;
 			$attributes['max'] = $max;

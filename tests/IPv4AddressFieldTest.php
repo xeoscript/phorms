@@ -1,8 +1,7 @@
 <?php
-
 require_once "FieldTest.php";
 
-class IPv4AddressTest extends FieldTest {
+class IPv4AddressFieldTest extends FieldTest {
 	
 	protected $field = 'Phorm_Field_IPv4Address';
 	
