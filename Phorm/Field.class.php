@@ -362,7 +362,7 @@ abstract class Phorm_Field
 	 * @return mixed
 	 */
 	public function export_value($value) {
-		return (string) $value;
+		return ($this->multi_field) ? $value : (string) $value;
 	}
 	
 	/**
