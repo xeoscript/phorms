@@ -64,12 +64,13 @@ abstract class Phorm_Field
 	 */
 	private $valid;
 
-	/**
-	 * @param string $label the field's label
-	 * @param array $validators callbacks used to validate field data
-	 * @param array $attributes an assoc of key/value pairs representing HTML attributes
-	 * @return null
-	 */
+    /**
+     * @param string $label the field's label
+     * @param array $validators callbacks used to validate field data
+     * @param array $attributes an assoc of key/value pairs representing HTML attributes
+     * @param string $lang
+     * @return \Phorm_Field
+     */
 	public function __construct($label, array $validators=array(), array $attributes=array(), $lang='en')
 	{
 		if( !isset($attributes['class']) )
@@ -157,12 +158,13 @@ abstract class Phorm_Field
 		return $this->errors;
 	}
 
-	/**
-	 * Adds to the error list.
-	 *
-	 * @author Aaron Stone <aaron@serendipity.cx>
-	 * @return null
-	 */
+    /**
+     * Adds to the error list.
+     *
+     * @author Aaron Stone <aaron@serendipity.cx>
+     * @param $error
+     * @return null
+     */
 	public function add_error($error)
 	{
 		$this->errors[] = $error;
@@ -175,7 +177,9 @@ abstract class Phorm_Field
 	 * @param string $text the help text
 	 * @return null|string
 	 */
-	public function help_text($text='')
+
+    /** @noinspection PhpInconsistentReturnPointsInspection */
+    public function help_text($text='')
 	{
 		if( !empty($text) )
 		{
@@ -209,7 +213,11 @@ abstract class Phorm_Field
 	 */
 	public function html()
 	{
-		$widget = $this->get_widget();
+        /**
+         * @var $widget Phorm_Widget
+         */
+
+        $widget = $this->get_widget();
 		return $widget->html($this->value, $this->attributes);
 	}
 
@@ -224,7 +232,8 @@ abstract class Phorm_Field
 		$elts = array();
 		if( is_array($this->errors) && !empty($this->errors) )
 		{
-			foreach( $this->errors as $valid => $error )
+            /** @noinspection PhpUnusedLocalVariableInspection */
+            foreach( $this->errors as $valid => $error )
 			{
 				if($tag)
 				{
@@ -272,7 +281,8 @@ abstract class Phorm_Field
 			$this->errors = array();
 			$v = $this->validators;
 
-			foreach( $v as $k => $f )
+            /** @noinspection PhpUnusedLocalVariableInspection */
+            foreach( $v as $k => $f )
 			{
 				try
 				{
@@ -323,7 +333,7 @@ abstract class Phorm_Field
 	/**
 	 * Defined in derived classes; must return an instance of PhormWidget.
 	 *
-	 * @return PhormWidget the field's widget
+	 * @return Phorm_Widget the field's widget
 	 * @see PhormWidget
 	 */
 	abstract protected function get_widget();
@@ -332,7 +342,7 @@ abstract class Phorm_Field
 	 * Raises a Phorm_ValidationError if $value is invalid.
 	 *
 	 * @param string|mixed $value (may be mixed if prepare_value returns a non-string)
-	 * @throws ValidationError
+	 * @throws Phorm_ValidationError
 	 * @return null
 	 * @see ValidationError
 	 */
