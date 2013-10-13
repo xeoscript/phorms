@@ -8,6 +8,7 @@ abstract class BootstrapPhorm extends Phorm_Phorm
 
     function __toString()
     {
+        echo 'called....';
         return $this->as_bootstrap();
     }
 
@@ -22,15 +23,20 @@ abstract class BootstrapPhorm extends Phorm_Phorm
         /**
          * @var $field Phorm_Field
          */
+
+
         $elements = array();
         $fields = $this->fields();
 
         foreach ($fields as $name => $field) {
 
+            $class = $field->get_attribute('class');
+            $class .= ' form-control';
+            $field->set_attribute('class', $class);
 
             $label = $field->label();
             if (!empty($label)) {
-                $elements[] = '<div class="phorm_element">';
+                $elements[] = '<div class="form-group">';
                 $elements[] = $label;
                 $elements[] = $field;
                 $elements[] = '</div>';

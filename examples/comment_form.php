@@ -13,7 +13,7 @@ require_once('../phorms.php');
  * @property Phorm_Field_Textarea message
  * @property Phorm_Field_Checkbox notify
  */
-class CommentForm extends Phorm_Phorm
+class CommentForm extends BootstrapPhorm
 {
 
 	protected function define_fields()
@@ -48,12 +48,13 @@ $form = new CommentForm('post', false, array( 'post_id' => $post_id, 'notify' =>
 $valid = $form->is_valid();
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>Comment Form example for Phorm</title>
-		<link rel="stylesheet" href="assets/style.css" type="text/css" />
+		<link rel="stylesheet" href="assets/bootstrap-3.0.0/css/bootstrap.min.css" type="text/css" />
+		<link rel="stylesheet" href="assets/bootstrap-3.0.0/css/bootstrap-theme.min.css" type="text/css" />
 	</head>
 	<body>
 		<h1>Add a comment</h1>
@@ -61,7 +62,7 @@ $valid = $form->is_valid();
 		<?php if( $form->has_errors() ) { ?>
 		<div class="phorm_error">Please correct the following errors.</div>
 		<?php } ?>
-		<?php echo $form->as_table(TRUE); ?>
+		<?php echo $form; ?>
 		<div>
 			<input type="button" value="Reset form" onclick="this.form.reset();" />
 			<input type="submit" value="Submit" />
