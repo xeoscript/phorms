@@ -91,13 +91,14 @@ abstract class Phorm_Phorm
 	 */
 	public static $html5 = false;
 
-	/**
-	 * @param string $method 'post' or 'get' (defaults to 'post')
-	 * @param boolean $multi_part true if this form accepts files
-	 * @param array $data initial/default data for form fields (e.g. array('first_name'=>'enter your name'))
-	 * @param string $lang the language in which the phorm will respond
-	 * @return void
-	 */
+    /**
+     * @param string $method 'post' or 'get' (defaults to 'post')
+     * @param boolean $multi_part true if this form accepts files
+     * @param array $data initial/default data for form fields (e.g. array('first_name'=>'enter your name'))
+     * @param string $lang the language in which the phorm will respond
+     * @throws Exception
+     * @return \Phorm_Phorm
+     */
 	public function __construct($method='post', $multi_part=FALSE, $data=array(), $lang='en')
 	{
 		$this->multi_part = $multi_part;
@@ -137,12 +138,13 @@ abstract class Phorm_Phorm
 	 */
 	abstract protected function define_fields();
 
-	/**
-	 * Returns true if any of the field's names exist in the source data (or
-	 * in $_FILES if this is a multi-part form.)
-	 *
-	 * @return boolean
-	 */
+    /**
+     * Returns true if any of the field's names exist in the source data (or
+     * in $_FILES if this is a multi-part form.)
+     *
+     * @param array $data
+     * @return boolean
+     */
 	private function check_if_bound(array $data)
 	{
 		foreach( $this->fields as $name => $field )
@@ -203,15 +205,16 @@ abstract class Phorm_Phorm
 		}
 	}
 
-	/**
-	 * Returns an associative array of the imported form data on a bound, valid
-	 * form. Returns null if the form is not yet bound or if the form is not
-	 * valid. Calls each field's get_value method, caching the values in the
-	 * Phorm instance. If reprocess is true, the cache is rebuilt.
-	 *
-	 * @author Aaron Stone
-	 * @return array|null
-	 */
+    /**
+     * Returns an associative array of the imported form data on a bound, valid
+     * form. Returns null if the form is not yet bound or if the form is not
+     * valid. Calls each field's get_value method, caching the values in the
+     * Phorm instance. If reprocess is true, the cache is rebuilt.
+     *
+     * @author Aaron Stone
+     * @param bool $reprocess
+     * @return array|null
+     */
 	public function cleaned_data($reprocess=FALSE)
 	{
 		if( !$this->bound && !$this->is_valid() )
@@ -319,12 +322,13 @@ abstract class Phorm_Phorm
 		return $this->valid;
 	}
 
-	/**
-	 * Returns the form's opening HTML tag.
-	 *
-	 * @param string $target the form target ($_SERVER['PHP_SELF'] by default)
-	 * @return string the form's opening tag
-	 */
+    /**
+     * Returns the form's opening HTML tag.
+     *
+     * @param string $target the form target ($_SERVER['PHP_SELF'] by default)
+     * @param null $attributes
+     * @return string the form's opening tag
+     */
 	public function open($target=NULL, $attributes=NULL)
 	{
 		if( is_null($target) )
@@ -350,11 +354,12 @@ abstract class Phorm_Phorm
 		return "</form>\n";
 	}
 
-	/**
-	 * Returns the buttons for submitting or resetting the form.
-	 *
-	 * @return string the form's closing tag
-	 */
+    /**
+     * Returns the buttons for submitting or resetting the form.
+     *
+     * @param array $buttons
+     * @return string the form's closing tag
+     */
 	public function buttons($buttons = array())
 	{
 		global $phorms_tr;
