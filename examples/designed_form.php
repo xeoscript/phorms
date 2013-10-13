@@ -5,6 +5,23 @@ require_once('../phorms.php');
 define('CONFIRMATION_EMAIL_TO', ''); //enter your email address here to have this example send an email (assuming your server has php mail capabilities)
 
 //Form field definitions:
+/**
+ * @property Phorm_Field_Text name
+ * @property Phorm_Field_Text company
+ * @property Phorm_Field_Text street
+ * @property Phorm_Field_Text apt
+ * @property Phorm_Field_Text city
+ * @property Phorm_Field_Text state
+ * @property Phorm_Field_Text postal
+ * @property Phorm_Field_Text country
+ * @property Phorm_Field_Text phone
+ * @property Phorm_Field_Text fax
+ * @property Phorm_Field_Email email
+ * @property Phorm_Field_URL url
+ * @property Phorm_Field_DropDown bookname
+ * @property Phorm_Field_Integer quantity
+ * @property Phorm_Field_Textarea message
+ */
 class OrderForm extends Phorm_Phorm {
 	protected function define_fields() {
 		$this->name = new Phorm_Field_Text("Name", 24, 255, array('required'));
@@ -38,7 +55,7 @@ if ($form->is_valid()) {
 	foreach ($form->fields() as $field) {
 		$email_body .= $field->label(false) . ': ' . $field->get_value() . "\n";
 	}
-	
+
 	if (CONFIRMATION_EMAIL_TO) {
 		mail(CONFIRMATION_EMAIL_TO, 'New Order has been received!', $email_body);
 		echo 'Thank you for your order!';
@@ -55,7 +72,7 @@ if ($form->is_valid()) {
 <html>
 <head>
 	<title>Form test</title>
-	
+
 	<style>
 	.errors {
 		background-color: #FFCCCC;
@@ -67,19 +84,19 @@ if ($form->is_valid()) {
 		padding-top: 5px;
 		font-weight: bold;
 		list-style: disc inside;
-	
+
 	}
 	</style>
 </head>
 <body>
-<div id="rtCont">		
+<div id="rtCont">
 	<table width="100%" height="324"  border="0" cellpadding="6" cellspacing="0" class="redborder  maintable">
 		<tr>
 			<td>
 				<h2>Order Form</h2>
 			</td>
 		</tr>
-		
+
 		<?php if ($form->has_errors()): ?>
 		<tr>
 			<td>
@@ -92,7 +109,7 @@ if ($form->is_valid()) {
 			</td>
 		</tr>
 		<?php endif; ?>
-		
+
 		<tr>
 			<td>
 				<?php echo $form->open(); ?>
@@ -120,7 +137,7 @@ if ($form->is_valid()) {
 							<td align="right" nowrap><b><?php echo $form->city->label(); ?></b></td>
 							<td nowrap><?php echo $form->city->html(); ?></td>
 						</tr>
-	
+
 						<tr>
 							<td align="right" nowrap><b><?php echo $form->state->label(); ?></b></td>
 							<td nowrap>
@@ -147,19 +164,19 @@ if ($form->is_valid()) {
 							<td align="right" nowrap><b><?php echo $form->url->label(); ?></b></td>
 							<td nowrap>http://<?php echo $form->url->html(); ?></td>
 						</tr>
-	
+
 						<tr>
 							<td align="right" nowrap><b><?php echo $form->bookname->label(); ?></b></td>
 							<td align="left">
 								<?php echo $form->bookname->html(); ?>
 							</td>
 						</tr>
-	
+
 						<tr>
 							<td align="right" nowrap><b><?php echo $form->quantity->label(); ?></b></td>
 							<td nowrap><?php echo $form->quantity->html(); ?></td>
 						</tr>
-	
+
 						<tr>
 							<td style="padding-top:8px" align="right" valign="top" nowrap><b><?php echo $form->message->label(); ?></b></td>
 							<td style="padding-top:8px" valign="top" nowrap><?php echo $form->message->html(); ?><br>

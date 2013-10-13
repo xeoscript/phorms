@@ -3,6 +3,16 @@ error_reporting( E_ALL);
 
 require_once('../phorms.php');
 
+
+/**
+ * @property Phorm_Field_Hidden user_id
+ * @property Phorm_Field_URL url
+ * @property Phorm_Field_Textarea bio
+ * @property Phorm_Field_Email email
+ * @property Phorm_Field_Text last_name
+ * @property Phorm_Field_Text first_name
+ * @property mixed fieldsets
+ */
 class ProfileForm extends Phorm_FieldsetPhorm
 {
 	protected function define_fields()
