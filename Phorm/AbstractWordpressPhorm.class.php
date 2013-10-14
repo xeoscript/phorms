@@ -1,20 +1,20 @@
 <?php
 
-abstract class BootstrapPhorm extends Phorm_Phorm
+abstract class AbstractWordpressPhorm extends Phorm_Phorm
 {
 
     function __toString()
     {
-        return $this->as_bootstrap();
+        return $this->as_wordpress_field();
     }
 
     /**
      * Returns the form fields.
      *
      * @author Muhammed K K
-     * @return string the HTML form bootstrap styled
+     * @return string the HTML form wordpress widget styled
      */
-    public function as_bootstrap()
+    public function as_wordpress_field()
     {
         /**
          * @var $field Phorm_Field
@@ -27,15 +27,15 @@ abstract class BootstrapPhorm extends Phorm_Phorm
         foreach ($fields as $name => $field) {
 
             $class = $field->get_attribute('class');
-            $class .= ' form-control';
+            $class .= ' widefat';
             $field->set_attribute('class', $class);
 
             $label = $field->label();
             if (!empty($label)) {
-                $elements[] = '<div class="form-group">';
+                $elements[] = '<p>';
                 $elements[] = $label;
                 $elements[] = $field;
-                $elements[] = '</div>';
+                $elements[] = '</p>';
             } else {
                 $elements[] = strval($field);
             }

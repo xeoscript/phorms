@@ -48,7 +48,6 @@ $form = new CommentForm('post', false, array( 'post_id' => $post_id, 'notify' =>
 $valid = $form->is_valid();
 
 ?>
-
 <!DOCTYPE html>
 <html>
 	<head>
