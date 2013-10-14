@@ -132,13 +132,16 @@ abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
      * @return mixed
      */
     public function save_data($post_id) {
+        /**
+         * @var $field Phorm_Field
+         */
+
         if ($this->can_save() == false) {
             return $post_id;
         }
 
-        $fields = $this->fields();
         $this->is_valid();
-        $values = $this->cleaned_data();
+        $fields = $this->fields();
 
         if (!$this->bound) {
             die('Form not bound');
@@ -146,7 +149,7 @@ abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
 
 
         foreach ($fields as $name => $field) {
-            $value = $values[$name];
+            $value = $field->get_value();
             $value = $this->sanitize_field($name, $value);
             update_post_meta($post_id, $name, $value);
         }
