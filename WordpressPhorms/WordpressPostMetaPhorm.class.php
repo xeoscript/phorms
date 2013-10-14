@@ -4,7 +4,6 @@ abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
     private $has_error;
 
     protected $meta_box_id = NULL;
-    protected $prefix = NULL;
     protected $name = NULL;
     protected $nonce = NULL;
 
@@ -16,9 +15,6 @@ abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
      */
     function __construct() {
         // Some Validation
-        if ($this->prefix == NULL) {
-            throw new ErrorException("Prefix is required.");
-        }
         if ($this->name == NULL) {
             throw new ErrorException("Name is required.");
         }
@@ -32,46 +28,37 @@ abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
         parent::__construct();
 
         $this->nonce_name = $this->prefix . $this->meta_box_id;
+
+        if ($this->bound) {
+
+        } else {
+            if ($_POST['smb-id_custom_name']) {
+                echo $_POST['smb-id_custom_name'];
+                die('NOT BOUND');
+            }
+        }
+
         $this->add_wp_hooks();
-        $this->set_prefix();
     }
 
     /**
      * Add the wordpress meta boxes and actions.
      */
     protected function add_wp_hooks() {
-        add_meta_box($this->meta_box_id, $this->name, array($this, 'display_box'), $this->post_type, $this->position);
-        add_action('add_meta_boxes', array($this, 'display_box'));
+        add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
         add_action('save_post', array($this, 'save_data'));
         add_action('save_post', array($this, 'validate_save'));
         add_action('admin_notices', array($this, 'show_error_message'));
     }
 
-    protected function set_prefix() {
-        /**
-         * @var $field Phorm_Field
-         */
-
-
-        $fields = $this->fields();
-        $new_fields = array();
-
-        foreach ($fields as $name) {
-            $field = $fields[$name];
-
-            $new_name = sprintf("%s_%s", $this->prefix, $name);
-            $id = sprintf('id_%s', $new_name);
-
-            $field->set_attribute('id', $id);
-            $field->set_attribute('name', ($field->multi_field) ? sprintf('%s[]', $new_name) : $new_name);
-
-            $new_fields[$new_name] = $field;
-            unset($fields[$name]);
-        }
-
-        foreach ($new_fields as $name) {
-            $fields[$name] = $new_fields[$name];
-        }
+    public function add_meta_boxes() {
+        add_meta_box(
+            $this->meta_box_id,
+            $this->name,
+            array($this, 'display_box'),
+            $this->post_type,
+            $this->position
+        );
     }
 
     /**
@@ -89,8 +76,7 @@ abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
         $values = array();
         $post_id = $post->ID;
 
-        foreach ($fields as $field) {
-            $name = $this->prefix . $field;
+        foreach ($fields as $name => $field) {
             $values[$name] = get_post_meta($post_id, $name, true);
         }
 
@@ -148,15 +134,19 @@ abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
         }
 
         $fields = $this->fields();
+        $this->is_valid();
         $values = $this->cleaned_data();
 
-        foreach ($fields as $field) {
-            $value = $values[$field];
-            $value = $this->sanitize_field($field, $value);
-            update_post_meta($post_id, $field, $value);
+        if (!$this->bound) {
+            die('Form not bound');
         }
 
-        $this->set_data($values, true);
+
+        foreach ($fields as $name => $field) {
+            $value = $values[$name];
+            $value = $this->sanitize_field($name, $value);
+            update_post_meta($post_id, $name, $value);
+        }
     }
 
     public function validate_save($post_id) {
@@ -187,7 +177,7 @@ abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
      */
     public function display_box($post) {
         $this->load_data($post);
-        wp_nonce_field($this->nonce_name, $this->nonce);
+        wp_nonce_field($this->nonce, $this->nonce_name);
         echo $this;
     }
 
