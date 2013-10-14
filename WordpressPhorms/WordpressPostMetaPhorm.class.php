@@ -37,6 +37,7 @@ abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
 
         $this->nonce_name = $this->prefix . $this->meta_box_id;
         $this->add_wp_hooks();
+        $this->set_prefix();
     }
 
     /**
@@ -48,6 +49,33 @@ abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
         add_action('save_post', array($this, 'save_data'));
         add_action('save_post', array($this, 'validate_save'));
         add_action('admin_notices', array($this, 'show_error_message'));
+    }
+
+    protected function set_prefix() {
+        /**
+         * @var $field Phorm_Field
+         */
+
+
+        $fields = $this->fields();
+        $new_fields = array();
+
+        foreach ($fields as $name) {
+            $field = $fields[$name];
+
+            $new_name = sprintf("%s_%s", $this->prefix, $name);
+            $id = sprintf('id_%s', $new_name);
+
+            $field->set_attribute('id', $id);
+            $field->set_attribute('name', ($field->multi_field) ? sprintf('%s[]', $new_name) : $new_name);
+
+            $new_fields[$new_name] = $field;
+            unset($fields[$name]);
+        }
+
+        foreach ($new_fields as $name) {
+            $fields[$name] = $new_fields[$name];
+        }
     }
 
     /**
@@ -101,10 +129,14 @@ abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
      * @return string
      */
     protected function sanitize_field($name, $value) {
+        if (!$name) {
+            return '';
+        }
         return sanitize_text_field($value);
     }
 
     /**
+     *
      * Saved the data when update or publish is clicked. This function
      * will check if this can be saved using can_save function. If the
      * data can be saved then it will be saved. Otherwise it will be
@@ -168,13 +200,20 @@ abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
             return;
         }
 
+        $nested_errors = $this->get_errors();
+
         $messages = array();
         $messages[] = '<div class="error" id="message">';
-        $messages[] =   '<p>';
-        $messages[] =     '<strong>';
-        $messages[] =       'Please correct the errors.';
-        $messages[] =     '</strong>';
-        $messages[] =   '</p>';
+        $messages[] = '<p>';
+        $messages[] = '<strong>';
+        $messages[] = 'Please correct the errors.';
+        foreach ($nested_errors as $field_name => $field_error) {
+            $messages[] = '<div>';
+            $messages[] = $this->$field_name->label(false) . ': ' . $field_error[1];
+            $messages[] = '</div>';
+        }
+        $messages[] = '</strong>';
+        $messages[] = '</p>';
         $messages[] = '</div>';
 
         echo implode('', $messages);
