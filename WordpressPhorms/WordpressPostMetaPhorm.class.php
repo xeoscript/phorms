@@ -1,9 +1,5 @@
 <?php
 
-/*
- * TODO: Find a method to add prefix in id and name of the fields.
- */
-
 abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
     private $has_error;
 
