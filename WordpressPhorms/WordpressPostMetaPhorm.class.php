@@ -15,6 +15,9 @@ abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
      */
     function __construct() {
         // Some Validation
+        if ($this->prefix == NULL) {
+            throw new ErrorException("Prefix is required.");
+        }
         if ($this->name == NULL) {
             throw new ErrorException("Name is required.");
         }

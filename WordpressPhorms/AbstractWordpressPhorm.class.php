@@ -14,12 +14,6 @@ abstract class AbstractWordpressPhorm {
     public static $html5 = false;
 
     public function __construct() {
-
-        // Some Validation
-        if ($this->prefix == NULL) {
-            throw new ErrorException("Prefix is required.");
-        }
-
         $this->multi_part = false;
 
 
@@ -59,7 +53,11 @@ abstract class AbstractWordpressPhorm {
             $field = $this->$name;
 
             if ($field instanceof Phorm_Field) {
-                $name = $this->prefix . '_' . htmlentities($name);
+                if ($this->prefix) {
+                    $name = $this->prefix . '_' . htmlentities($name);
+                } else {
+                    $name = htmlentities($name);
+                }
                 $id = sprintf('id_%s', $name);
 
                 $field->set_attribute('id', $id);
