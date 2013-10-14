@@ -146,6 +146,7 @@ abstract class AbstractWordpressPhorm {
         if ($reprocess || is_null($this->valid)) {
             if ($this->bound) {
                 $this->valid = TRUE;
+                /** @noinspection PhpUnusedLocalVariableInspection */
                 foreach ($this->fields as $name => &$field) {
                     if (!$field->is_valid($reprocess)) {
                         $this->valid = FALSE;
@@ -173,6 +174,7 @@ abstract class AbstractWordpressPhorm {
         $elements = array();
         $fields = $this->fields();
 
+        /** @noinspection PhpUnusedLocalVariableInspection */
         foreach ($fields as $name => $field) {
 
             $class = $field->get_attribute('class');
