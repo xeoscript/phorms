@@ -1,5 +1,17 @@
 <?php
 
+/*
+Plugin Name: Phorms Library
+Description: A simple plugin which loads phorms and wordpress_phorms libs.
+Version: 0.0.1
+Author: Muhammed K K
+Author URI:
+License: GPL3
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
+Text Domain: phorms-library
+Domain Path: /languages/
+*/
+
 /**
  * Define some constants
  */
