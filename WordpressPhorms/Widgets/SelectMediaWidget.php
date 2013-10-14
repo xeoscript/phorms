@@ -16,7 +16,7 @@
  * @package    WordpressPhorms
  * @subpackage Widgets
  */
-class SelectMediaWidget extends Phorm_Widget_Text {
+class WordpressSelectMediaWidget extends Phorm_Widget_Text {
 
     function __construct() {
 
@@ -33,7 +33,7 @@ class SelectMediaWidget extends Phorm_Widget_Text {
     }
 
     public static function enqueue_scripts() {
-        SelectMediaWidget::register_script();
+        WordpressSelectMediaWidget::register_script();
 
         wp_enqueue_script('jquery');
         wp_enqueue_script('media-upload');
@@ -46,8 +46,10 @@ class SelectMediaWidget extends Phorm_Widget_Text {
     }
 
     public static function wp_hooks() {
-        add_action('admin_print_scripts', array(SelectMediaWidget, 'enqueue_scripts'));
-        add_action('admin_print_styles', array(SelectMediaWidget, 'enqueue_styles'));
+        /** @noinspection PhpUndefinedConstantInspection */
+        add_action('admin_print_scripts', array(WordpressSelectMediaWidget, 'enqueue_scripts'));
+        /** @noinspection PhpUndefinedConstantInspection */
+        add_action('admin_print_styles', array(WordpressSelectMediaWidget, 'enqueue_styles'));
     }
 
     protected function serialize($value, array $attributes = array()) {

@@ -26,16 +26,16 @@ class WordpressSelectMediaField extends Phorm_Field_Text {
      */
     public function __construct($label, array $attributes = array()) {
         parent::__construct($label, 255, 255, array(), $attributes);
-        SelectMediaWidget::wp_hooks();
+        WordpressSelectMediaWidget::wp_hooks();
     }
 
     /**
-     * Returns a new CharWidget.
+     * Returns a new WordpressSelectMediaWidget.
      *
-     * @return SelectMediaWidget
+     * @return WordpressSelectMediaWidget
      */
     protected function get_widget() {
-        return new SelectMediaWidget();
+        return new WordpressSelectMediaWidget();
     }
 
 }
