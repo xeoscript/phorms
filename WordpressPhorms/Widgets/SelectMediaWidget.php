@@ -8,7 +8,7 @@
  */
 
 /**
- * Phorm_Widget_Text
+ * WordpressSelectMediaWidget
  *
  * A basic select media widget.
  *
