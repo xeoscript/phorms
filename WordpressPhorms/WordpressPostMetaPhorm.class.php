@@ -5,6 +5,7 @@
  */
 
 abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
+    private $has_error;
 
     protected $meta_box_id = NULL;
     protected $prefix = NULL;
@@ -28,9 +29,13 @@ abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
         if ($this->nonce == NULL) {
             throw new ErrorException("Nonce is required.");
         }
+        if ($this->meta_box_id == NULL) {
+            throw new ErrorException("Meta box ID is required.");
+        }
 
         parent::__construct();
 
+        $this->nonce_name = $this->prefix . $this->meta_box_id;
         $this->add_wp_hooks();
     }
 
@@ -42,12 +47,20 @@ abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
         add_action('add_meta_boxes', array($this, 'display_box'));
         add_action('save_post', array($this, 'save_data'));
         add_action('save_post', array($this, 'validate_save'));
+        add_action('admin_notices', array($this, 'show_error_message'));
     }
 
     /**
-     *
+     * Loads the data to the form from the database.
+     * This function will only execute if this is not
+     * a post back from the user.
      */
     protected function load_data($post) {
+        // Don't load data if this is a post back.
+        if ($this->bound) {
+            return;
+        }
+
         $fields = $this->fields();
         $values = array();
         $post_id = $post->ID;
@@ -60,10 +73,6 @@ abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
         $this->set_data($values, true);
     }
 
-    protected function nonce_name() {
-        return $this->prefix . $this->meta_box_id;
-    }
-
     /**
      * Checks whether the post meta items can be saved now.
      *
@@ -74,7 +83,7 @@ abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
             return false;
         }
 
-        $nonce_name = $this->nonce_name();
+        $nonce_name = $this->nonce_name;
         if (!isset($_POST[$nonce_name])) {
             return false;
         }
@@ -86,7 +95,7 @@ abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
     }
 
     /**
-     * @param $name string The name of the field
+     * @param $name  string The name of the field
      * @param $value string the value of the field
      *
      * @return string
@@ -105,7 +114,7 @@ abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
      *
      * @return mixed
      */
-    protected function save_data($post_id) {
+    public function save_data($post_id) {
         if ($this->can_save() == false) {
             return $post_id;
         }
@@ -122,7 +131,11 @@ abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
         $this->set_data($values, true);
     }
 
-    protected function validate_save($post_id) {
+    public function validate_save($post_id) {
+        /**
+         * @var $wpdb wpdb
+         */
+
         if ($this->can_save() == false) {
             return false;
         }
@@ -139,10 +152,32 @@ abstract class WordpressPostMetaPhorm extends AbstractWordpressPhorm {
         }
     }
 
-    protected function display_box($post) {
+    /**
+     * Displays the meta box generation HTML.
+     *
+     * @param $post
+     */
+    public function display_box($post) {
         $this->load_data($post);
-        wp_nonce_field($this->nonce_name(), $this->nonce);
+        wp_nonce_field($this->nonce_name, $this->nonce);
         echo $this;
+    }
+
+    public function show_error_message() {
+        if ($this->has_error == false) {
+            return;
+        }
+
+        $messages = array();
+        $messages[] = '<div class="error" id="message">';
+        $messages[] =   '<p>';
+        $messages[] =     '<strong>';
+        $messages[] =       'Please correct the errors.';
+        $messages[] =     '</strong>';
+        $messages[] =   '</p>';
+        $messages[] = '</div>';
+
+        echo implode('', $messages);
     }
 
 }
